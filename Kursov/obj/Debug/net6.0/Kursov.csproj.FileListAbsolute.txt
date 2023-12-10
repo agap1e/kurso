@@ -1,0 +1,15 @@
+D:\GitHub\kurso\Kursov\bin\Debug\net6.0\Kursov.exe
+D:\GitHub\kurso\Kursov\bin\Debug\net6.0\Kursov.deps.json
+D:\GitHub\kurso\Kursov\bin\Debug\net6.0\Kursov.runtimeconfig.json
+D:\GitHub\kurso\Kursov\bin\Debug\net6.0\Kursov.dll
+D:\GitHub\kurso\Kursov\bin\Debug\net6.0\Kursov.pdb
+D:\GitHub\kurso\Kursov\obj\Debug\net6.0\Kursov.csproj.AssemblyReference.cache
+D:\GitHub\kurso\Kursov\obj\Debug\net6.0\Kursov.GeneratedMSBuildEditorConfig.editorconfig
+D:\GitHub\kurso\Kursov\obj\Debug\net6.0\Kursov.AssemblyInfoInputs.cache
+D:\GitHub\kurso\Kursov\obj\Debug\net6.0\Kursov.AssemblyInfo.cs
+D:\GitHub\kurso\Kursov\obj\Debug\net6.0\Kursov.csproj.CoreCompileInputs.cache
+D:\GitHub\kurso\Kursov\obj\Debug\net6.0\Kursov.dll
+D:\GitHub\kurso\Kursov\obj\Debug\net6.0\refint\Kursov.dll
+D:\GitHub\kurso\Kursov\obj\Debug\net6.0\Kursov.pdb
+D:\GitHub\kurso\Kursov\obj\Debug\net6.0\Kursov.genruntimeconfig.cache
+D:\GitHub\kurso\Kursov\obj\Debug\net6.0\ref\Kursov.dll
