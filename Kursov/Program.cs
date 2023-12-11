@@ -7,7 +7,7 @@ namespace Kursov
         static void Main(string[] args)
         {
             BD bd = new BD();
-            bool isEx = true;
+            /*bool isEx = true;
             string YN;
             while (isEx) 
             {
@@ -27,7 +27,24 @@ namespace Kursov
                 }
             }
             bd.AddGenre(Console.ReadLine()!);
-            bd.Show(0);
+            bd.Show(0);*/
+            string title = "Человек-паук";
+            int year = 2023;
+            int circual = 10000;
+            int price = 10;
+            bd.Show(2);
+            string str1 = Console.ReadLine();
+            if (str1 == "новый")
+            {
+                str1 = Console.ReadLine();
+                bd.Add(str1);
+            }
+            else
+            {
+                str1 = Console.ReadLine();
+                bd.AddWriter()
+            }
+            bd.Add(title, year, circual, price);
         }
     }
 }
