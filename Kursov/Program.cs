@@ -25,30 +25,39 @@ namespace Kursov
                             Console.Clear();
                             switch (i)
                             {
-                                case 1: // try catch
+                                case 1:
                                     bool isAddingComics = true;
                                     while (isAddingComics)
                                     {
-                                        Console.WriteLine("Введите название комикса, год выхода, тираж, цену, жанр, сценариста, издателя, страну издателя");//Переделать (убрать страну????)
-                                        string title = Console.ReadLine();
-                                        int year = int.Parse(Console.ReadLine());
-                                        int circ = int.Parse(Console.ReadLine());
-                                        int price = int.Parse(Console.ReadLine());
-                                        string genre = Console.ReadLine();
-                                        string writer = Console.ReadLine();
-                                        string publ = Console.ReadLine();
-                                        string country = Console.ReadLine();
-                                        bd.Add(title, year, circ, price, genre, writer, publ, country);
-                                        Console.Clear();
-                                        Console.WriteLine("Комикс успешно добавлен. Хотите добавить ещё?(Введите n для выхода)");
-                                        if (Console.ReadLine().ToLower() == "n")
+                                        try
                                         {
-                                            isAddingComics = false;
+                                            Console.WriteLine("Введите название комикса, год выхода, тираж, цену, жанр, сценариста, издателя, страну издателя");//Переделать (убрать страну????)
+                                            string title = Console.ReadLine();
+                                            int year = int.Parse(Console.ReadLine());
+                                            int circ = int.Parse(Console.ReadLine());
+                                            int price = int.Parse(Console.ReadLine());
+                                            string genre = Console.ReadLine();
+                                            string writer = Console.ReadLine();
+                                            string publ = Console.ReadLine();
+                                            string country = Console.ReadLine();
+                                            bd.Add(title, year, circ, price, genre, writer, publ, country);
+                                            Console.Clear();
+                                            Console.WriteLine("Комикс успешно добавлен. Хотите добавить ещё?(Введите n для выхода)");
+                                            if (Console.ReadLine().ToLower() == "n")
+                                            {
+                                                isAddingComics = false;
+                                            }
+                                            Console.Clear();
                                         }
-                                        Console.Clear();
+                                        catch(Exception ex)
+                                        {
+                                            Console.WriteLine(ex.Message+ ". Для продолжения нажмите Enter");
+                                            Console.ReadKey();
+                                            break;
+                                        }
                                     }
-                                    Console.WriteLine("Хотите добавить что-то ещё? (Введите y для добавления)");
-                                    if (Console.ReadLine().ToLower() == "y")
+                                    Console.WriteLine("Хотите добавить что-то ещё? (Введите n для выхода)");
+                                    if (Console.ReadLine().ToLower() == "n")
                                     {
                                         isAdding = false;
                                     }
@@ -62,22 +71,23 @@ namespace Kursov
                                         try
                                         {
                                             bd.Add(Console.ReadLine(), true);
+                                            Console.Clear();
+                                            Console.WriteLine("Жанр успешно добавлен. Хотите добавить ещё?(Введите n для выхода)");
                                         }
                                         catch(Exception ex)
-                                        { 
-                                            Console.WriteLine(ex.Message);
+                                        {
+                                            Console.WriteLine(ex.Message + ". Для продолжения нажмите Enter");
+                                            Console.ReadKey();
                                             break;
                                         }
-                                        Console.Clear();
-                                        Console.WriteLine("Жанр успешно добавлен. Хотите добавить ещё?(Введите n для выхода)");
                                         if (Console.ReadLine().ToLower() == "n")
                                         {
                                             isAddingGenre = false;
                                         }
                                         Console.Clear();
                                     }
-                                    Console.WriteLine("Хотите добавить что-то ещё? (Введите y для добавления)");
-                                    if (Console.ReadLine().ToLower() == "y")
+                                    Console.WriteLine("Хотите добавить что-то ещё? (Введите n для выхода)");
+                                    if (Console.ReadLine().ToLower() == "n")
                                     {
                                         isAdding = false;
                                     }
@@ -91,22 +101,23 @@ namespace Kursov
                                         try
                                         {
                                             bd.Add(Console.ReadLine());
+                                            Console.Clear();
+                                            Console.WriteLine("Сценарист успешно добавлен. Хотите добавить ещё?(Введите n для выхода)");
                                         }
                                         catch (Exception ex)
                                         {
-                                            Console.WriteLine(ex.Message);
+                                            Console.WriteLine(ex.Message + ". Для продолжения нажмите Enter");
+                                            Console.ReadKey();
                                             break;
                                         }
-                                        Console.Clear();
-                                        Console.WriteLine("Сценарист успешно добавлен. Хотите добавить ещё?(Введите n для выхода)");
                                         if (Console.ReadLine().ToLower() == "n")
                                         {
                                             isAddingWriter = false;
                                         }
                                         Console.Clear();
                                     }
-                                    Console.WriteLine("Хотите добавить что-то ещё? (Введите y для добавления)");
-                                    if (Console.ReadLine().ToLower() == "y")
+                                    Console.WriteLine("Хотите добавить что-то ещё? (Введите n для выхода)");
+                                    if (Console.ReadLine().ToLower() == "n")
                                     {
                                         isAdding = false;
                                     }
@@ -122,22 +133,23 @@ namespace Kursov
                                         try
                                         {
                                             bd.Add(publ, country);
+                                            Console.Clear();
+                                            Console.WriteLine("Издатель успешно добавлен. Хотите добавить ещё?(Введите n для выхода)");
                                         }
                                         catch (Exception ex)
                                         {
-                                            Console.WriteLine(ex.Message);
+                                            Console.WriteLine(ex.Message + ". Для продолжения нажмите Enter");
+                                            Console.ReadKey();
                                             break;
                                         }
-                                        Console.Clear();
-                                        Console.WriteLine("Издатель успешно добавлен. Хотите добавить ещё?(Введите n для выхода)");
                                         if (Console.ReadLine().ToLower() == "n")
                                         {
                                             isAddingPubl = false;
                                         }
                                         Console.Clear();
                                     }
-                                    Console.WriteLine("Хотите добавить что-то ещё? (Введите y для добавления)");
-                                    if (Console.ReadLine().ToLower() == "y")
+                                    Console.WriteLine("Хотите добавить что-то ещё? (Введите n для выхода)");
+                                    if (Console.ReadLine().ToLower() == "n")
                                     {
                                         isAdding = false;
                                     }
@@ -151,6 +163,141 @@ namespace Kursov
                         n = 0;
                         break;
                     case 2:
+                        bool isRemoving = true;
+                        while (isRemoving)
+                        {
+                            Console.WriteLine("Удалить: 1 - комикс, 2 - жанр, 3 - сценариста, 4 - издателя; 5 - возврат");
+                            int i = int.Parse(Console.ReadLine());
+                            Console.Clear();
+                            switch (i)
+                            {
+                                case 1: 
+                                    bool isRemovingComics = true;
+                                    while (isRemovingComics)
+                                    {
+                                        try
+                                        {
+                                            Console.WriteLine("Введите название комикса");
+                                            string title = Console.ReadLine();
+                                            bd.RemoveComics(title);
+                                            Console.Clear();
+                                            Console.WriteLine("Комикс успешно удалён. Хотите удалить ещё?(Введите n для выхода)");
+                                            if (Console.ReadLine().ToLower() == "n")
+                                            {
+                                                isRemovingComics = false;
+                                            }
+                                            Console.Clear();
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Console.WriteLine(ex.Message + ". Для продолжения нажмите Enter");
+                                            Console.ReadKey();
+                                            break;
+                                        }
+                                    }
+                                    Console.WriteLine("Хотите удалить что-то ещё? (Введите n для выхода)");
+                                    if (Console.ReadLine().ToLower() == "n")
+                                    {
+                                        isRemoving = false;
+                                    }
+                                    Console.Clear();
+                                    break;
+                                case 2:
+                                    bool isRemovingGenre = true;
+                                    while (isRemovingGenre)
+                                    {
+                                        Console.WriteLine("Введите название жанра");
+                                        try
+                                        {
+                                            bd.RemoveGenre(Console.ReadLine());
+                                            Console.Clear();
+                                            Console.WriteLine("Жанр успешно удалён. Хотите удалить ещё?(Введите n для выхода)");
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Console.WriteLine(ex.Message + ". Для продолжения нажмите Enter");
+                                            Console.ReadKey();
+                                            break;
+                                        }
+                                        if (Console.ReadLine().ToLower() == "n")
+                                        {
+                                            isRemovingGenre = false;
+                                        }
+                                        Console.Clear();
+                                    }
+                                    Console.WriteLine("Хотите удалить что-то ещё? (Введите n для выхода)");
+                                    if (Console.ReadLine().ToLower() == "n")
+                                    {
+                                        isRemoving = false;
+                                    }
+                                    Console.Clear();
+                                    break;
+                                case 3:
+                                    bool isRemovingWriter = true;
+                                    while (isRemovingWriter)
+                                    {
+                                        Console.WriteLine("Введите фамилия сценариста");
+                                        try
+                                        {
+                                            bd.RemoveWriter(Console.ReadLine());
+                                            Console.Clear();
+                                            Console.WriteLine("Сценарист успешно удалён. Хотите удалить ещё?(Введите n для выхода)");
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Console.WriteLine(ex.Message + ". Для продолжения нажмите Enter");
+                                            Console.ReadKey();
+                                            break;
+                                        }
+                                        if (Console.ReadLine().ToLower() == "n")
+                                        {
+                                            isRemovingWriter = false;
+                                        }
+                                        Console.Clear();
+                                    }
+                                    Console.WriteLine("Хотите удалить что-то ещё? (Введите n для выхода)");
+                                    if (Console.ReadLine().ToLower() == "n")
+                                    {
+                                        isRemoving = false;
+                                    }
+                                    Console.Clear();
+                                    break;
+                                case 4:
+                                    bool isRemovingPubl = true;
+                                    while (isRemovingPubl)
+                                    {
+                                        Console.WriteLine("Введите название издательства");
+                                        try
+                                        {
+                                            bd.RemovePublisher(Console.ReadLine());
+                                            Console.Clear();
+                                            Console.WriteLine("Издатель успешно удалён. Хотите удалить ещё?(Введите n для выхода)");
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Console.WriteLine(ex.Message + ". Для продолжения нажмите Enter");
+                                            Console.ReadKey();
+                                            break;
+                                        }
+                                        if (Console.ReadLine().ToLower() == "n")
+                                        {
+                                            isRemovingPubl = false;
+                                        }
+                                        Console.Clear();
+                                    }
+                                    Console.WriteLine("Хотите удалить что-то ещё? (Введите n для выхода)");
+                                    if (Console.ReadLine().ToLower() == "n")
+                                    {
+                                        isRemoving = false;
+                                    }
+                                    Console.Clear();
+                                    break;
+                                case 5:
+                                    isRemoving = false;
+                                    break;
+                            }
+                        }
+                        n = 0;
                         break;
                     case 3:
                         Console.WriteLine("Показать: 1 - комиксы, 2 - жанры, 3 - сценаристов, 4 - издателей; 5 - возврат");

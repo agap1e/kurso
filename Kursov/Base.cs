@@ -1,4 +1,10 @@
-﻿using System.Xml.Linq;
+﻿using ComicsClass;
+using GenreClass;
+using WriterClass;
+using PublisherClass;
+using IdentityClass;
+using System.Xml.Linq;
+
 namespace Base
 {
     class BD
@@ -7,7 +13,6 @@ namespace Base
         List<Genre> BD_Genre = new List<Genre>();
         List<Writer> BD_Writer = new List<Writer>();
         List<Publisher> BD_Publisher = new List<Publisher>();
-        //СЦЕНАРИСТ МОЖЕТ БЫТЬ ОДИН И ТОТ ЖЕ
         public void Add(string title, int year, int circulation, int price, string genre, string writer, string publ, string country) //Добавляем в бд комикс
         {
             Comics comics = new Comics(title, year, circulation, price);
@@ -15,15 +20,17 @@ namespace Base
             {
                 AddWriter(comics, writer);
             }
-            catch
+            catch 
             {
                 Add(writer);
+
             }
             try
             {
                 AddPubl(comics, publ);
+                
             }
-            catch
+            catch 
             {
                 Add(publ, country);
             }
@@ -78,21 +85,60 @@ namespace Base
         }
         public void AddWriter(Comics comics, string str)
         {
-            comics.Writer_id = FindWriterInfo(str);
+            comics.Writer_id = FindWriterInfo(str).ID;
         }
         public void AddPubl(Comics comics, string str)
         {
-            comics.Publ_id = FindPublisherInfo(str);
+            comics.Publ_id = FindPublisherInfo(str).ID;
         }
         public void AddGenre(Comics comics, string str)
         {
-            comics.Genre_id = FindGenreInfo(str);
+            comics.Genre_id = FindGenreInfo(str).ID;
         }
         
-        public void Remove() //Удаление элемента бд
+        public void RemoveComics(string name) //Удаление комикса
         {
-
-        } 
+            if (BD_Comics.Contains(FindComicsInfo(name)))
+            {
+                BD_Comics.Remove(FindComicsInfo(name));
+            }
+            else throw new Exception("Нельзя удалить комикс, т.к. его не существует");
+        }
+        public void RemoveGenre(string name) //Удаление жанра
+        {
+            if (CheckForRemove(name) && BD_Genre.Contains(FindGenreInfo(name)))
+            {
+                BD_Genre.Remove(FindGenreInfo(name));
+            }
+            else throw new Exception("Нельзя удалить жанр, т.к. он используется или не существует");
+        }
+        public void RemoveWriter(string name) //Удаление сценариста
+        {
+            if (CheckForRemove(name) && BD_Writer.Contains(FindWriterInfo(name)))
+            {
+                BD_Writer.Remove(FindWriterInfo(name));
+            }
+            else throw new Exception("Нельзя удалить сценариста, т.к. он используется или не существует");
+        }
+        public void RemovePublisher(string name) //Удаление издателя
+        {
+            if (CheckForRemove(name) && BD_Publisher.Contains(FindPublisherInfo(name)))
+            {
+                BD_Publisher.Remove(FindPublisherInfo(name));
+            }
+            else throw new Exception("Нельзя удалить издателя, т.к. он используется или не существует");
+        }
+        private bool CheckForRemove(string name)
+        {
+            foreach(Comics com in BD_Comics)
+            {
+                if (com.Genre_id == FindGenreInfo(name).ID || com.Writer_id == FindWriterInfo(name).ID || com.Publ_id == FindPublisherInfo(name).ID)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         public void Clear() //Удаление всего бд
         { 
             BD_Comics.Clear();
@@ -100,42 +146,6 @@ namespace Base
             BD_Writer.Clear();
             BD_Publisher.Clear();
         }
-        /*public return Search(int n, string str) //Поиск в бд
-        {
-            switch (n)
-            {
-                case 0:
-                    foreach (Comics comics in BD_Comics)
-                    {
-
-                        Console.WriteLine(comics.Name + "\t" + "Жанр" + "\t" + comics.Year + "\t" + comics.Circulation + "\t" + "Сценарсит" + "\t" + "Издатель");
-                    }
-                    break;
-                case 1:
-                    Console.WriteLine("Жанры\n");
-                    foreach (Genre genre in BD_Genre)
-                    {
-                        Console.WriteLine(genre.Name);
-                    }
-                    break;
-                case 2:
-                    foreach (Writer writer in BD_Writer)
-                    {
-                        if (writer.ID == writer_id)
-                        {
-                            return writer.Name;
-                        }
-                    }
-                    return "Не удалось найти сценариста";
-                case 3:
-                    Console.WriteLine("Издатели\tСтрана\n");
-                    foreach (Publisher publisher in BD_Publisher)
-                    {
-                        Console.WriteLine(publisher.Name + publisher.Country);
-                    }
-                    break;
-            }
-        }*/
         public void Show(int n)
         {
             switch(n){
@@ -143,7 +153,7 @@ namespace Base
                     Console.WriteLine("Название комикса  Жанр  Год выхода  Тираж  Цена  Сценарист  Издатель\n");
                     foreach (Comics comics in BD_Comics) 
                     {
-                        Console.WriteLine(comics.Name + "\t" + FindGenreInfo(comics.Genre_id) + "\t" + comics.Year + "\t" + comics.Circulation + "\t" + comics.Price + "\t" + FindWriterInfo(comics.Writer_id) + "\t" + FindPublisherInfo(comics.Publ_id));
+                        Console.WriteLine(comics.Name + "\t" + FindGenreInfo(comics.Genre_id).Name + "\t" + comics.Year + "\t" + comics.Circulation + "\t" + comics.Price + "\t" + FindWriterInfo(comics.Writer_id).Name + "\t" + FindPublisherInfo(comics.Publ_id).Name);
                     }
                     break;
                 case 2:
@@ -161,14 +171,14 @@ namespace Base
                     }
                     break;
                 case 4:
-                    Console.WriteLine("Издатели\tСтрана\n");
+                    Console.WriteLine("Издатели  Страна\n");
                     foreach (Publisher publisher in BD_Publisher)
                     {
-                        Console.WriteLine(publisher.Name + publisher.Country);
+                        Console.WriteLine(publisher.Name + "\t" + publisher.Country);
                     }
                     break;
             }
-        } //Вывод поправить
+        } //Вывод
         private int? Check<T>(T what, List<T> list) where T : Identity  //коэффициент Танимото
         {
             double kmax = 0;
@@ -200,7 +210,7 @@ namespace Base
             }
             return index;
         }
-        private bool isAdd(string sim) //Изменить!!!
+        private bool isAdd(string sim)
         {
             Console.WriteLine($"Значение похоже на: {sim}, уверены, что написали правильно?(y/n)");
             if(Console.ReadLine() == "y")
@@ -209,241 +219,82 @@ namespace Base
             }
             return false;
         }
-        private string FindWriterInfo(int writer_id) //Поиск сценарист по ID
+        private Writer FindWriterInfo(int writer_id) //Поиск сценарист по ID
         {
             foreach (Writer writer in BD_Writer)
             {
                 if (writer.ID == writer_id)
                 {
-                    return writer.Name;
+                    return writer;
                 }
             }
             throw new Exception("Не удалось найти сценариста");
         }
-        private int FindWriterInfo(string writer_name) //Поиск ID сценарист по фамилии
+        private Writer FindWriterInfo(string writer_name) //Поиск ID сценарист по фамилии
         {
             foreach (Writer writer in BD_Writer)
             {
                 if (writer.Name == writer_name)
                 {
-                    return writer.ID;
+                    return writer;
                 }
             }
             throw new Exception("Не удалось найти сценариста");
         }
-        private string FindGenreInfo(int genre_id) //Поиск жанра по ID
+        private Genre FindGenreInfo(int genre_id) //Поиск жанра по ID
         {
             foreach (Genre genre in BD_Genre)
             {
                 if (genre.ID == genre_id)
                 {
-                    return genre.Name;
+                    return genre;
                 }
             }
-            throw new Exception("Не удалось найти сценариста");
+            throw new Exception("Не удалось найти жанр");
         }
-        private int FindGenreInfo(string genre_name) //Поиск ID жанра по названию
+        private Genre FindGenreInfo(string genre_name) //Поиск ID жанра по названию
         {
             foreach (Genre genre in BD_Genre)
             {
                 if (genre.Name == genre_name)
                 {
-                    return genre.ID;
+                    return genre;
                 }
             }
-            throw new Exception("Не удалось найти сценариста");
+            throw new Exception("Не удалось найти жанр");
         }
-        private string FindPublisherInfo(int publ_id) //Поиск издательства по ID
+        private Publisher FindPublisherInfo(int publ_id) //Поиск издательства по ID
         {
             foreach (Publisher publ in BD_Publisher)
             {
                 if (publ.ID == publ_id)
                 {
-                    return publ.Name;
+                    return publ;
                 }
             }
-            throw new Exception("Не удалось найти сценариста");
+            throw new Exception("Не удалось найти издателя");
         }
-        private int FindPublisherInfo(string publ_name) //Поиск ID издательства по названию
+        private Publisher FindPublisherInfo(string publ_name) //Поиск ID издательства по названию
         {
             foreach (Publisher publ in BD_Publisher)
             {
                 if (publ.Name == publ_name)
                 {
-                    return publ.ID;
+                    return publ;
                 }
             }
-            throw new Exception("Не удалось найти сценариста");
+            throw new Exception("Не удалось найти издателя");
         }
-        //Издатель по стране??
-        //Комикс по названию
-        //Комикс по автору
-        //Комикс по году
-        //Комикс по цене
-        //Комикс по издательству
-        //Комикс по жанру
-    }
-    abstract class Identity
-    {
-        public abstract int ID { get; }
-        public abstract string Name { get; set; }
-    }
-    class Comics : Identity
-    {
-        static int new_id = 0;
-        int year;
-        int circulation;
-        int price;
-        string name;
-        public override int ID { get; }
-        public override string Name 
+        private Comics FindComicsInfo(string comics_title) //Поиск ID издательства по названию
         {
-            get => name;
-            set
+            foreach (Comics comics in BD_Comics)
             {
-                value = value.Trim();
-                if ((value is null) || (value.Length == 0))
+                if (comics.Name == comics_title)
                 {
-                    throw new Exception("Должно быть указано название комикса.");
+                    return comics;
                 }
-                else name = value;
             }
-        }
-        public int Year
-        {
-            get => year;
-            set
-            {
-                if (1894 < value && value < 2025)
-                {
-                    year = value;
-                }
-                else throw new Exception("Год указан некорректно.");
-            }
-        }
-        public int Circulation
-        {
-            get => circulation;
-            set 
-            { 
-                if (value < 0)
-                {
-                    throw new Exception("Тираж указан некорректно");
-                }
-                else circulation = value;
-                
-            }
-        }
-        public int Price
-        {
-            get => price;
-            set 
-            { 
-                if (value < 0)
-                {
-                    throw new Exception("Цена указана некорректно");
-                }
-                else price = value;
-            }  
-        }
-        public Comics (string title, int year, int circulation, int price)
-        {
-            ID = new_id++;
-            Name = title;
-            Year = year;
-            Circulation = circulation;
-            Price = price;
-        }
-        public int Writer_id { get; set; } //Автосвойство потому что программа сама поставит (Покажется какие есть варианты и пользователь введёт или новое, или которое есть)
-        public int Publ_id { get; set; } //Автосвойство потому что программа сама поставит (Покажется какие есть варианты и пользователь введёт или новое, или которое есть)
-        public int Genre_id { get; set; } //Автосвойство потому что программа сама поставит (Покажется какие есть варианты и пользователь введёт или новое, или которое есть)
-
-    }
-    class Genre : Identity
-    {
-        static int new_id = 0;
-        string name;
-        public override int ID { get; }
-        public override string Name
-        {
-            get => name;
-            set
-            {
-                value = value.Trim();
-                if ((value is null) || (value.Length == 0))
-                {
-                    throw new Exception("Должно быть указано название жанра.");
-                }
-                else name = value;
-            }
-        }
-        public Genre(string name)
-        {
-            ID = new_id++;
-            Name = name;
-        }
-    }
-    class Writer : Identity
-    {
-        static int new_id = 0;
-        string name;
-        public override int ID { get; }
-        public override string Name  //Исключения!
-        {
-            get => name;
-            set
-            {
-                value = value.Trim();
-                if ((value is null) || (value.Length == 0))
-                {
-                    throw new Exception("Должна быть указана фамилия автора.");
-                }
-                else name = value;
-            }
-        }
-        public Writer(string name)
-        {
-            ID = new_id++;
-            Name = name;
-        }
-    }
-    class Publisher : Identity
-    {
-        static int new_id = 0;
-        string name;
-        string country;
-        public override int ID { get; }
-        public override string Name    // Исключения!
-        {
-            get => name;
-            set
-            {
-                value = value.Trim();
-                if ((value is null) || (value.Length == 0))
-                {
-                    throw new Exception("Должно быть указано название издателя.");
-                }
-                else name = value;
-            }
-        }
-        public string Country   // Исключения!
-        {
-            get => country;
-            set
-            {
-                value = value.Trim();
-                if ((value is null) || (value.Length == 0))
-                {
-                    throw new Exception("Должно быть указано название страны.");
-                }
-                else country = value;
-            }
-        }
-        public Publisher(string name, string country)
-        {
-            ID = new_id++;
-            Name = name;
-            Country = country;
+            throw new Exception("Не удалось найти комикс");
         }
     }
 }
