@@ -8,11 +8,11 @@ namespace Kursov
             BD bd = new BD();
             int n = 0;
             bool isWorking = true;
-            while(isWorking) { //Везде добавить некорректное значение + break + если введены одни и те же значения + если не то число введено
+            while(isWorking) {
                 switch (n)
                 {
                     case 0:
-                        Console.WriteLine("1 - добавление, 2 - удаление, 3 - показ информации, 4 - удаление всей базы данных, 5 - выход");
+                        Console.WriteLine("1 - добавление, 2 - удаление, 3 - показ информации, 4 - выход");
                         n = int.Parse(Console.ReadLine());
                         Console.Clear();
                         break;
@@ -158,6 +158,13 @@ namespace Kursov
                                 case 5:
                                     isAdding = false;
                                     break;
+                                default:
+                                    Console.WriteLine("Введено некорректное значение. Закончить добавление?(Введите y для выхода)");
+                                    if (Console.ReadLine().ToLower() == "y")
+                                    {
+                                        isAdding = false;
+                                    }
+                                    break;
                             }
                         }
                         n = 0;
@@ -295,19 +302,28 @@ namespace Kursov
                                 case 5:
                                     isRemoving = false;
                                     break;
+                                default:
+                                    Console.WriteLine("Введено некорректное значение. Закончить удаление?(Введите y для выхода)");
+                                    if (Console.ReadLine().ToLower() == "y")
+                                    {
+                                        isAdding = false;
+                                    }
+                                    break;
                             }
                         }
                         n = 0;
                         break;
                     case 3:
                         Console.WriteLine("Показать: 1 - комиксы, 2 - жанры, 3 - сценаристов, 4 - издателей; 5 - возврат");
-                        bd.Show(int.Parse(Console.ReadLine()));
+                        int show = int.Parse(Console.ReadLine());
+                        Console.Clear();
+                        bd.Show(show);
+                        Console.Write("\nДля продолжения нажмите Enter.");
+                        Console.ReadKey();
+                        Console.Clear();
                         n = 0;
                         break;
                     case 4:
-                        bd.Clear();
-                        break;
-                    case 5:
                         isWorking = false;
                         break;
                     default:
@@ -316,50 +332,11 @@ namespace Kursov
                         {
                             isWorking = false;
                         }
+                        Console.Clear();
+                        n = 0;
                         break;
                 }
             }
-            
-            /*bool isEx = true;
-            string YN;
-            while (isEx) 
-            {
-                try
-                {
-                    bd.AddGenre(Console.ReadLine()!);
-                    isEx = false;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Ошибка: {ex.Message}, хотите написать ещё раз?(y/n)");
-                    YN = Console.ReadLine();
-                    if (YN == "n")
-                    {
-                        isEx = false; 
-                    }
-                }
-            }
-            bd.AddGenre(Console.ReadLine()!);
-            bd.Show(0);
-            string title = "Человек-паук";
-            int year = 2023;
-            int circual = 10000;
-            int price = 10;
-            string genre = "dsa";
-            string writer = "dsadsa";
-            string publ = "adas";
-            string country = "dsadsa";
-            bd.Add(title, year, circual, price, genre, writer, publ, country);
-            title = "Бетмен";
-            year = 2000;
-            circual = 100;
-            price = 1000;
-            genre = "dsadsadas";
-            writer = "ds";
-            publ = "dsadsafdassfsafsa";
-            country = "dsadsadsadsadsadsa";
-            bd.Add(title, year, circual, price, genre, writer, publ, country);
-            bd.Show(0);*/
         }
     }
 }

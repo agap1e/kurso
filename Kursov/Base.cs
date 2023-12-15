@@ -3,7 +3,8 @@ using GenreClass;
 using WriterClass;
 using PublisherClass;
 using IdentityClass;
-using System.Xml.Linq;
+using Spire.Xls;
+using System.Data.SqlTypes;
 
 namespace Base
 {
@@ -13,6 +14,69 @@ namespace Base
         List<Genre> BD_Genre = new List<Genre>();
         List<Writer> BD_Writer = new List<Writer>();
         List<Publisher> BD_Publisher = new List<Publisher>();
+        Workbook workbook = new Workbook();
+        public BD()
+        {
+            if (File.Exists("Base.xlsx"))
+            {
+                workbook.LoadFromFile("Base.xlsx");
+
+                Worksheet worksheet = workbook.Worksheets[1];
+                int rowsCount = worksheet.Rows.Count();
+                for (int i = 2; i <= rowsCount; i++)
+                {
+                    Add(worksheet.Range[i, 2].Value, true);
+                }
+
+                worksheet = workbook.Worksheets[2];
+                rowsCount = worksheet.Rows.Count();
+                for (int i = 2; i <= rowsCount; i++)
+                {
+                    Add(worksheet.Range[i, 2].Value);
+                }
+
+                worksheet = workbook.Worksheets[3];
+                rowsCount = worksheet.Rows.Count();
+                for (int i = 2; i <= rowsCount; i++)
+                {
+                    Add(worksheet.Range[i, 2].Value, worksheet.Range[i, 3].Value);
+                }
+
+                worksheet = workbook.Worksheets[0];
+                rowsCount = worksheet.Rows.Count();
+                for (int i = 2; i <= rowsCount; i++)
+                {
+                    Add(worksheet.Range[i, 2].Value, int.Parse(worksheet.Range[i, 3].Value), int.Parse(worksheet.Range[i, 5].Value), int.Parse(worksheet.Range[i, 6].Value), FindGenreInfo(int.Parse(worksheet.Range[i, 4].Value)).Name, FindWriterInfo(int.Parse(worksheet.Range[i, 7].Value)).Name, FindPublisherInfo(int.Parse(worksheet.Range[i, 8].Value)).Name, FindPublisherInfo(int.Parse(worksheet.Range[i, 8].Value)).Country);
+                }
+            }
+            else
+            {
+                workbook.CreateEmptySheet();
+                Worksheet worksheet = workbook.Worksheets[0];
+                worksheet.Range[1, 1].Value = "ID комикса";
+                worksheet.Range[1, 2].Value = "Название комикса";
+                worksheet.Range[1, 3].Value = "Год выхода";
+                worksheet.Range[1, 4].Value = "ID Жанра";
+                worksheet.Range[1, 5].Value = "Тираж";
+                worksheet.Range[1, 6].Value = "Цена";
+                worksheet.Range[1, 7].Value = "ID Сценариста";
+                worksheet.Range[1, 8].Value = "ID Издателя";
+                worksheet.AllocatedRange.AutoFitColumns();
+                worksheet = workbook.Worksheets[1];
+                worksheet.Range[1, 1].Value = "ID жанра";
+                worksheet.Range[1, 2].Value = "Название жанра";
+                worksheet.AllocatedRange.AutoFitColumns();
+                worksheet = workbook.Worksheets[2];
+                worksheet.Range[1, 1].Value = "ID сценариста";
+                worksheet.Range[1, 2].Value = "Фамилия сценариста";
+                worksheet.AllocatedRange.AutoFitColumns();
+                worksheet = workbook.Worksheets[3];
+                worksheet.Range[1, 1].Value = "ID издателя";
+                worksheet.Range[1, 2].Value = "Название издателя";
+                worksheet.Range[1, 3].Value = "Страна";
+                worksheet.AllocatedRange.AutoFitColumns();
+            }
+        }
         public void Add(string title, int year, int circulation, int price, string genre, string writer, string publ, string country) //Добавляем в бд комикс
         {
             Comics comics = new Comics(title, year, circulation, price);
@@ -22,17 +86,15 @@ namespace Base
             }
             catch 
             {
-                Add(writer);
-
+                Add(writer, comics);
             }
             try
             {
                 AddPubl(comics, publ);
-                
             }
             catch 
             {
-                Add(publ, country);
+                Add(publ, country, comics);
             }
             try
             {
@@ -40,20 +102,26 @@ namespace Base
             }
             catch
             {
-                Add(genre, true);
+                Add(genre, true, comics);
             }
             BD_Comics.Add(comics);
+            Save(comics);
         }
         public void Add(string name, bool isGenre) //Добавляем в бд жанры
         {
             Genre genre = new Genre(name);
             int? sim = Check(genre, BD_Genre);
-            if (sim is null) BD_Genre.Add(genre);
+            if (sim is null)
+            {
+                BD_Genre.Add(genre);
+                Save(genre);
+            }
             else
             {
-                if (isAdd(BD_Genre[(int)sim].Name) == true)
+                if (isAdd(BD_Genre[(int)sim].Name))
                 {
                     BD_Genre.Add(genre);
+                    Save(genre);
                 }
             }
         }
@@ -61,12 +129,17 @@ namespace Base
         {
             Writer writer = new Writer(name);
             int? sim = Check(writer, BD_Writer);
-            if (sim is null) BD_Writer.Add(writer);
+            if (sim is null)
+            {
+                BD_Writer.Add(writer);
+                Save(writer);
+            }
             else
             {
-                if (isAdd(BD_Writer[(int)sim].Name) == true)
+                if (isAdd(BD_Writer[(int)sim].Name))
                 {
                     BD_Writer.Add(writer);
+                    Save(writer);
                 }
             }
         }
@@ -74,26 +147,19 @@ namespace Base
         {
             Publisher publ = new Publisher(name, country);
             int? sim = Check(publ, BD_Publisher);
-            if (sim is null) BD_Publisher.Add(publ);
+            if (sim is null)
+            {
+                BD_Publisher.Add(publ);
+                Save(publ);
+            }
             else
             {
-                if (isAdd(BD_Publisher[(int)sim].Name) == true)
+                if (isAdd(BD_Publisher[(int)sim].Name))
                 {
                     BD_Publisher.Add(publ);
+                    Save(publ);
                 }
             }
-        }
-        public void AddWriter(Comics comics, string str)
-        {
-            comics.Writer_id = FindWriterInfo(str).ID;
-        }
-        public void AddPubl(Comics comics, string str)
-        {
-            comics.Publ_id = FindPublisherInfo(str).ID;
-        }
-        public void AddGenre(Comics comics, string str)
-        {
-            comics.Genre_id = FindGenreInfo(str).ID;
         }
         
         public void RemoveComics(string name) //Удаление комикса
@@ -101,50 +167,36 @@ namespace Base
             if (BD_Comics.Contains(FindComicsInfo(name)))
             {
                 BD_Comics.Remove(FindComicsInfo(name));
+                Delete(0, FindComicsInfo(name).ID);
             }
             else throw new Exception("Нельзя удалить комикс, т.к. его не существует");
         }
         public void RemoveGenre(string name) //Удаление жанра
         {
-            if (CheckForRemove(name) && BD_Genre.Contains(FindGenreInfo(name)))
+            if (CheckForRemove(name,0) && BD_Genre.Contains(FindGenreInfo(name)))
             {
                 BD_Genre.Remove(FindGenreInfo(name));
+                Delete(1, FindGenreInfo(name).ID);
             }
             else throw new Exception("Нельзя удалить жанр, т.к. он используется или не существует");
         }
         public void RemoveWriter(string name) //Удаление сценариста
         {
-            if (CheckForRemove(name) && BD_Writer.Contains(FindWriterInfo(name)))
+            if (CheckForRemove(name,1) && BD_Writer.Contains(FindWriterInfo(name)))
             {
                 BD_Writer.Remove(FindWriterInfo(name));
+                Delete(2, FindWriterInfo(name).ID);
             }
             else throw new Exception("Нельзя удалить сценариста, т.к. он используется или не существует");
         }
         public void RemovePublisher(string name) //Удаление издателя
         {
-            if (CheckForRemove(name) && BD_Publisher.Contains(FindPublisherInfo(name)))
+            if (CheckForRemove(name,2) && BD_Publisher.Contains(FindPublisherInfo(name)))
             {
                 BD_Publisher.Remove(FindPublisherInfo(name));
+                Delete(3, FindPublisherInfo(name).ID);
             }
             else throw new Exception("Нельзя удалить издателя, т.к. он используется или не существует");
-        }
-        private bool CheckForRemove(string name)
-        {
-            foreach(Comics com in BD_Comics)
-            {
-                if (com.Genre_id == FindGenreInfo(name).ID || com.Writer_id == FindWriterInfo(name).ID || com.Publ_id == FindPublisherInfo(name).ID)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-        public void Clear() //Удаление всего бд
-        { 
-            BD_Comics.Clear();
-            BD_Genre.Clear();
-            BD_Writer.Clear();
-            BD_Publisher.Clear();
         }
         public void Show(int n)
         {
@@ -179,7 +231,26 @@ namespace Base
                     break;
             }
         } //Вывод
-        private int? Check<T>(T what, List<T> list) where T : Identity  //коэффициент Танимото
+        private bool CheckForRemove(string name, int i) //Проверка на возможность удаления элемента
+        {
+            foreach (Comics com in BD_Comics)
+            {
+                if(i == 0)
+                {
+                    if (com.Genre_id == FindGenreInfo(name).ID) return false;
+                }
+                else if (i == 1)
+                {
+                    if (com.Writer_id == FindWriterInfo(name).ID) return false;
+                }
+                else if(i == 2)
+                {
+                    if (com.Publ_id == FindPublisherInfo(name).ID) return false;
+                }
+            }
+            return true;
+        }
+        private int? Check<T>(T what, List<T> list) where T : Identity  //Проверка на правильность написания (коэффициент Танимото)
         {
             double kmax = 0;
             int? index = null;
@@ -209,8 +280,8 @@ namespace Base
                 }
             }
             return index;
-        }
-        private bool isAdd(string sim)
+        } 
+        private bool isAdd(string sim) //Запрос на сохранение элемента
         {
             Console.WriteLine($"Значение похоже на: {sim}, уверены, что написали правильно?(y/n)");
             if(Console.ReadLine() == "y")
@@ -295,6 +366,135 @@ namespace Base
                 }
             }
             throw new Exception("Не удалось найти комикс");
+        }
+        private void AddWriter(Comics comics, string str) //Добавление в комикс сценариста
+        {
+            comics.Writer_id = FindWriterInfo(str).ID;
+        }
+        private void AddPubl(Comics comics, string str) //Добавление в комикс издателя
+        {
+            comics.Publ_id = FindPublisherInfo(str).ID;
+        }
+        private void AddGenre(Comics comics, string str) //Добавление в комикс жанра
+        {
+            comics.Genre_id = FindGenreInfo(str).ID;
+        }
+        private void Save(Comics comic)
+        {
+            Worksheet worksheet = workbook.Worksheets[0];
+            int g = comic.ID + 2;
+            worksheet.Range[g, 1].Value = comic.ID.ToString();
+            worksheet.Range[g, 2].Value = comic.Name;
+            worksheet.Range[g, 3].Value = comic.Year.ToString();
+            worksheet.Range[g, 4].Value = comic.Genre_id.ToString();
+            worksheet.Range[g, 5].Value = comic.Circulation.ToString();
+            worksheet.Range[g, 6].Value = comic.Price.ToString();
+            worksheet.Range[g, 7].Value = comic.Writer_id.ToString();
+            worksheet.Range[g, 8].Value = comic.Publ_id.ToString();
+            workbook.SaveToFile("Base.xlsx", ExcelVersion.Version2016);
+        }
+        private void Save(Genre genre)
+        {
+            Worksheet worksheet = workbook.Worksheets[1];
+            int g = genre.ID + 2;
+            worksheet.Range[g, 1].Value = genre.ID.ToString();
+            worksheet.Range[g, 2].Value = genre.Name;
+            workbook.SaveToFile("Base.xlsx", ExcelVersion.Version2016);
+        }
+        private void Save(Writer writer)
+        {
+            Worksheet worksheet = workbook.Worksheets[2];
+            int g = writer.ID + 2;
+            worksheet.Range[g, 1].Value = writer.ID.ToString();
+            worksheet.Range[g, 2].Value = writer.Name;
+            workbook.SaveToFile("Base.xlsx", ExcelVersion.Version2016);
+        }
+        private void Save(Publisher publ)
+        {
+            Worksheet worksheet = workbook.Worksheets[3];
+            int g = publ.ID + 2;
+            worksheet.Range[g, 1].Value = publ.ID.ToString();
+            worksheet.Range[g, 2].Value = publ.Name;
+            worksheet.Range[g, 3].Value = publ.Country;
+            workbook.SaveToFile("Base.xlsx", ExcelVersion.Version2016);
+        }
+        private void Delete(int i, int b)
+        {
+            Worksheet worksheet = workbook.Worksheets[i];
+            for (int g = 2; g <= worksheet.Rows.Count(); g++)
+            {
+                if (int.Parse(worksheet.Range[g,1].Value) == b)
+                {
+                    worksheet.DeleteRow(g);
+                }
+            }
+            
+        }
+        private void Add(string name, bool isGenre, Comics comics) //Добавляем в бд жанры
+        {
+            Genre genre = new Genre(name);
+            int? sim = Check(genre, BD_Genre);
+            if (sim is null)
+            {
+                BD_Genre.Add(genre);
+                Save(genre);
+            }
+            else
+            {
+                if (isAdd(BD_Genre[(int)sim].Name))
+                {
+                    BD_Genre.Add(genre);
+                    Save(genre);
+                }
+                else
+                {
+                    comics.Genre_id = (int)sim;
+                }
+            }
+        }
+        public void Add(string name, Comics comics) //Добавляем в бд сценаристов
+        {
+            Writer writer = new Writer(name);
+            int? sim = Check(writer, BD_Writer);
+            if (sim is null)
+            {
+                BD_Writer.Add(writer);
+                Save(writer);
+            }
+            else
+            {
+                if (isAdd(BD_Writer[(int)sim].Name))
+                {
+                    BD_Writer.Add(writer);
+                    Save(writer);
+                }
+                else
+                {
+                    comics.Writer_id = (int)sim;
+                }
+            }
+        }
+        public void Add(string name, string country, Comics comics) //Добавляем в бд издателей
+        {
+            Publisher publ = new Publisher(name, country);
+            int? sim = Check(publ, BD_Publisher);
+            if (sim is null)
+            {
+                BD_Publisher.Add(publ);
+                Save(publ);
+            }
+            else
+            {
+                if (isAdd(BD_Publisher[(int)sim].Name))
+                {
+                    BD_Publisher.Add(publ);
+                    Save(publ);
+                }
+                else
+                {
+                    comics.Publ_id = (int)sim;
+                }
+            }
         }
     }
 }

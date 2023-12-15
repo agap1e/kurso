@@ -8,7 +8,7 @@ namespace PublisherClass
         string name;
         string country;
         public override int ID { get; }
-        public override string Name    // Исключения!
+        public override string Name
         {
             get => name;
             set
@@ -25,7 +25,7 @@ namespace PublisherClass
                 else name = value;
             }
         }
-        public string Country   // Исключения!
+        public string Country
         {
             get => country;
             set

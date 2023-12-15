@@ -73,8 +73,8 @@ namespace ComicsClass
             Circulation = circulation;
             Price = price;
         }
-        public int Writer_id { get; set; } //Автосвойство потому что программа сама поставит (Покажется какие есть варианты и пользователь введёт или новое, или которое есть)
-        public int Publ_id { get; set; } //Автосвойство потому что программа сама поставит (Покажется какие есть варианты и пользователь введёт или новое, или которое есть)
-        public int Genre_id { get; set; } //Автосвойство потому что программа сама поставит (Покажется какие есть варианты и пользователь введёт или новое, или которое есть)
+        public int Writer_id { get; set; }
+        public int Publ_id { get; set; }
+        public int Genre_id { get; set; }
     }
 }

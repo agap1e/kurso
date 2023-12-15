@@ -7,7 +7,7 @@ namespace WriterClass
         static int new_id = 0;
         string name;
         public override int ID { get; }
-        public override string Name  //Исключения!
+        public override string Name
         {
             get => name;
             set

@@ -13,3 +13,14 @@ D:\GitHub\kurso\Kursov\obj\Debug\net6.0\refint\Kursov.dll
 D:\GitHub\kurso\Kursov\obj\Debug\net6.0\Kursov.pdb
 D:\GitHub\kurso\Kursov\obj\Debug\net6.0\Kursov.genruntimeconfig.cache
 D:\GitHub\kurso\Kursov\obj\Debug\net6.0\ref\Kursov.dll
+D:\GitHub\kurso\Kursov\bin\Debug\net6.0\Spire.Pdf.dll
+D:\GitHub\kurso\Kursov\bin\Debug\net6.0\Spire.XLS.dll
+D:\GitHub\kurso\Kursov\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
+D:\GitHub\kurso\Kursov\bin\Debug\net6.0\System.Drawing.Common.dll
+D:\GitHub\kurso\Kursov\bin\Debug\net6.0\System.Security.Cryptography.Pkcs.dll
+D:\GitHub\kurso\Kursov\bin\Debug\net6.0\System.Security.Cryptography.Xml.dll
+D:\GitHub\kurso\Kursov\bin\Debug\net6.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+D:\GitHub\kurso\Kursov\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
+D:\GitHub\kurso\Kursov\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
+D:\GitHub\kurso\Kursov\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.Pkcs.dll
+D:\GitHub\kurso\Kursov\obj\Debug\net6.0\Kursov.csproj.CopyComplete
