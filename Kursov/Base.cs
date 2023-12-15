@@ -166,8 +166,8 @@ namespace Base
         {
             if (BD_Comics.Contains(FindComicsInfo(name)))
             {
-                BD_Comics.Remove(FindComicsInfo(name));
                 Delete(0, FindComicsInfo(name).ID);
+                BD_Comics.Remove(FindComicsInfo(name));
             }
             else throw new Exception("Нельзя удалить комикс, т.к. его не существует");
         }
@@ -175,8 +175,8 @@ namespace Base
         {
             if (CheckForRemove(name,0) && BD_Genre.Contains(FindGenreInfo(name)))
             {
-                BD_Genre.Remove(FindGenreInfo(name));
                 Delete(1, FindGenreInfo(name).ID);
+                BD_Genre.Remove(FindGenreInfo(name));
             }
             else throw new Exception("Нельзя удалить жанр, т.к. он используется или не существует");
         }
@@ -184,8 +184,8 @@ namespace Base
         {
             if (CheckForRemove(name,1) && BD_Writer.Contains(FindWriterInfo(name)))
             {
-                BD_Writer.Remove(FindWriterInfo(name));
                 Delete(2, FindWriterInfo(name).ID);
+                BD_Writer.Remove(FindWriterInfo(name));
             }
             else throw new Exception("Нельзя удалить сценариста, т.к. он используется или не существует");
         }
@@ -193,8 +193,8 @@ namespace Base
         {
             if (CheckForRemove(name,2) && BD_Publisher.Contains(FindPublisherInfo(name)))
             {
-                BD_Publisher.Remove(FindPublisherInfo(name));
                 Delete(3, FindPublisherInfo(name).ID);
+                BD_Publisher.Remove(FindPublisherInfo(name));
             }
             else throw new Exception("Нельзя удалить издателя, т.к. он используется или не существует");
         }
