@@ -51,7 +51,7 @@ namespace Kursov
                                         }
                                         catch(Exception ex)
                                         {
-                                            Console.WriteLine(ex.Message+ ". Для продолжения нажмите Enter");
+                                            Console.WriteLine(ex.Message+ " Для продолжения нажмите Enter");
                                             Console.ReadKey();
                                             break;
                                         }
@@ -76,7 +76,7 @@ namespace Kursov
                                         }
                                         catch(Exception ex)
                                         {
-                                            Console.WriteLine(ex.Message + ". Для продолжения нажмите Enter");
+                                            Console.WriteLine(ex.Message + " Для продолжения нажмите Enter");
                                             Console.ReadKey();
                                             break;
                                         }
@@ -106,7 +106,7 @@ namespace Kursov
                                         }
                                         catch (Exception ex)
                                         {
-                                            Console.WriteLine(ex.Message + ". Для продолжения нажмите Enter");
+                                            Console.WriteLine(ex.Message + " Для продолжения нажмите Enter");
                                             Console.ReadKey();
                                             break;
                                         }
@@ -138,7 +138,7 @@ namespace Kursov
                                         }
                                         catch (Exception ex)
                                         {
-                                            Console.WriteLine(ex.Message + ". Для продолжения нажмите Enter");
+                                            Console.WriteLine(ex.Message + " Для продолжения нажмите Enter");
                                             Console.ReadKey();
                                             break;
                                         }
@@ -197,7 +197,7 @@ namespace Kursov
                                         }
                                         catch (Exception ex)
                                         {
-                                            Console.WriteLine(ex.Message + ". Для продолжения нажмите Enter");
+                                            Console.WriteLine(ex.Message + " Для продолжения нажмите Enter");
                                             Console.ReadKey();
                                             break;
                                         }
@@ -222,7 +222,7 @@ namespace Kursov
                                         }
                                         catch (Exception ex)
                                         {
-                                            Console.WriteLine(ex.Message + ". Для продолжения нажмите Enter");
+                                            Console.WriteLine(ex.Message + " Для продолжения нажмите Enter");
                                             Console.ReadKey();
                                             break;
                                         }
@@ -252,7 +252,7 @@ namespace Kursov
                                         }
                                         catch (Exception ex)
                                         {
-                                            Console.WriteLine(ex.Message + ". Для продолжения нажмите Enter");
+                                            Console.WriteLine(ex.Message + " Для продолжения нажмите Enter");
                                             Console.ReadKey();
                                             break;
                                         }
@@ -282,7 +282,7 @@ namespace Kursov
                                         }
                                         catch (Exception ex)
                                         {
-                                            Console.WriteLine(ex.Message + ". Для продолжения нажмите Enter");
+                                            Console.WriteLine(ex.Message + " Для продолжения нажмите Enter");
                                             Console.ReadKey();
                                             break;
                                         }

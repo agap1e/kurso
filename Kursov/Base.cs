@@ -173,7 +173,7 @@ namespace Base
         }
         public void RemoveGenre(string name) //Удаление жанра
         {
-            if (CheckForRemove(name,0) && BD_Genre.Contains(FindGenreInfo(name)))
+            if (CheckForRemove(name) && BD_Genre.Contains(FindGenreInfo(name)))
             {
                 Delete(1, FindGenreInfo(name).ID);
                 BD_Genre.Remove(FindGenreInfo(name));
@@ -182,7 +182,7 @@ namespace Base
         }
         public void RemoveWriter(string name) //Удаление сценариста
         {
-            if (CheckForRemove(name,1) && BD_Writer.Contains(FindWriterInfo(name)))
+            if (CheckForRemove(name) && BD_Writer.Contains(FindWriterInfo(name)))
             {
                 Delete(2, FindWriterInfo(name).ID);
                 BD_Writer.Remove(FindWriterInfo(name));
@@ -191,7 +191,7 @@ namespace Base
         }
         public void RemovePublisher(string name) //Удаление издателя
         {
-            if (CheckForRemove(name,2) && BD_Publisher.Contains(FindPublisherInfo(name)))
+            if (CheckForRemove(name) && BD_Publisher.Contains(FindPublisherInfo(name)))
             {
                 Delete(3, FindPublisherInfo(name).ID);
                 BD_Publisher.Remove(FindPublisherInfo(name));
@@ -231,22 +231,13 @@ namespace Base
                     break;
             }
         } //Вывод
-        private bool CheckForRemove(string name, int i) //Проверка на возможность удаления элемента
+        private bool CheckForRemove(string name) //Проверка на возможность удаления элемента
         {
             foreach (Comics com in BD_Comics)
             {
-                if(i == 0)
-                {
-                    if (com.Genre_id == FindGenreInfo(name).ID) return false;
-                }
-                else if (i == 1)
-                {
-                    if (com.Writer_id == FindWriterInfo(name).ID) return false;
-                }
-                else if(i == 2)
-                {
-                    if (com.Publ_id == FindPublisherInfo(name).ID) return false;
-                }
+                if (com.Genre_id == FindGenreInfo(name).ID) return false;
+                if (com.Writer_id == FindWriterInfo(name).ID) return false;
+                if (com.Publ_id == FindPublisherInfo(name).ID) return false;
             }
             return true;
         }
@@ -369,7 +360,7 @@ namespace Base
         }
         private void AddWriter(Comics comics, string str) //Добавление в комикс сценариста
         {
-            comics.Writer_id = FindWriterInfo(str).ID;
+            comics.Writer_id = FindWriterInfo(str).ID;    
         }
         private void AddPubl(Comics comics, string str) //Добавление в комикс издателя
         {
@@ -426,6 +417,7 @@ namespace Base
                 if (int.Parse(worksheet.Range[g,1].Value) == b)
                 {
                     worksheet.DeleteRow(g);
+                    workbook.SaveToFile("Base.xlsx", ExcelVersion.Version2016);
                 }
             }
             
@@ -437,6 +429,7 @@ namespace Base
             if (sim is null)
             {
                 BD_Genre.Add(genre);
+                comics.Genre_id = genre.ID;
                 Save(genre);
             }
             else
@@ -444,6 +437,7 @@ namespace Base
                 if (isAdd(BD_Genre[(int)sim].Name))
                 {
                     BD_Genre.Add(genre);
+                    comics.Genre_id = genre.ID;
                     Save(genre);
                 }
                 else
@@ -459,19 +453,18 @@ namespace Base
             if (sim is null)
             {
                 BD_Writer.Add(writer);
+                comics.Writer_id = writer.ID;
+                Save(writer);
+            }
+            else if (isAdd(BD_Writer[(int)sim].Name))
+            {
+                BD_Writer.Add(writer);
+                comics.Writer_id = writer.ID;
                 Save(writer);
             }
             else
             {
-                if (isAdd(BD_Writer[(int)sim].Name))
-                {
-                    BD_Writer.Add(writer);
-                    Save(writer);
-                }
-                else
-                {
-                    comics.Writer_id = (int)sim;
-                }
+                comics.Writer_id = (int)sim;
             }
         }
         public void Add(string name, string country, Comics comics) //Добавляем в бд издателей
@@ -481,6 +474,7 @@ namespace Base
             if (sim is null)
             {
                 BD_Publisher.Add(publ);
+                comics.Publ_id = publ.ID;
                 Save(publ);
             }
             else
@@ -488,6 +482,7 @@ namespace Base
                 if (isAdd(BD_Publisher[(int)sim].Name))
                 {
                     BD_Publisher.Add(publ);
+                    comics.Publ_id = publ.ID;
                     Save(publ);
                 }
                 else
