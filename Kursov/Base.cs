@@ -281,6 +281,48 @@ namespace Base
             }
             return false;
         }
+        public void Search(int i, string str)
+        {
+            switch(i)
+            {
+                case 1:
+                    foreach(Comics comics in BD_Comics)
+                    {
+                        if (comics.Name == str) Show(comics);
+                    }
+                    break;
+                case 2:
+                    Genre genre = FindGenreInfo(str);
+                    foreach(Comics comics in BD_Comics)
+                    {
+                        if (comics.Genre_id == genre.ID)
+                        {
+                            Show(comics);
+                        }
+                    }
+                    break;
+                case 3:
+                    Writer writer = FindWriterInfo(str);
+                    foreach (Comics comics in BD_Comics)
+                    {
+                        if (comics.Writer_id == writer.ID)
+                        {
+                            Show(comics);
+                        }
+                    }
+                    break;
+                case 4:
+                    Publisher publ = FindPublisherInfo(str);
+                    foreach (Comics comics in BD_Comics)
+                    {
+                        if (comics.Publ_id == publ.ID)
+                        {
+                            Show(comics);
+                        }
+                    }
+                    break;
+            }
+        }
         private Writer FindWriterInfo(int writer_id) //Поиск сценарист по ID
         {
             foreach (Writer writer in BD_Writer)
@@ -446,7 +488,7 @@ namespace Base
                 }
             }
         }
-        public void Add(string name, Comics comics) //Добавляем в бд сценаристов
+        private void Add(string name, Comics comics) //Добавляем в бд сценаристов
         {
             Writer writer = new Writer(name);
             int? sim = Check(writer, BD_Writer);
@@ -467,7 +509,7 @@ namespace Base
                 comics.Writer_id = (int)sim;
             }
         }
-        public void Add(string name, string country, Comics comics) //Добавляем в бд издателей
+        private void Add(string name, string country, Comics comics) //Добавляем в бд издателей
         {
             Publisher publ = new Publisher(name, country);
             int? sim = Check(publ, BD_Publisher);
@@ -490,6 +532,10 @@ namespace Base
                     comics.Publ_id = (int)sim;
                 }
             }
+        }
+        private void Show(Comics comics)
+        {
+            Console.WriteLine(comics.Name + "\t" + FindGenreInfo(comics.Genre_id).Name + "\t" + comics.Year + "\t" + comics.Circulation + "\t" + comics.Price + "\t" + FindWriterInfo(comics.Writer_id).Name + "\t" + FindPublisherInfo(comics.Publ_id).Name);
         }
     }
 }

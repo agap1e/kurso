@@ -12,8 +12,11 @@ namespace Kursov
                 switch (n)
                 {
                     case 0:
-                        Console.WriteLine("1 - добавление, 2 - удаление, 3 - показ информации, 4 - выход");
-                        n = int.Parse(Console.ReadLine());
+                        Console.WriteLine("1 - добавление, 2 - удаление, 3 - показ информации, 4 - поиск комикса, 5 - выход");
+                        if (!int.TryParse(Console.ReadLine(), out n))
+                        {
+                            n = 6;
+                        }
                         Console.Clear();
                         break;
                     case 1:
@@ -323,7 +326,27 @@ namespace Kursov
                         Console.Clear();
                         n = 0;
                         break;
+
                     case 4:
+                        Console.WriteLine("1 - по названию комикса, 2 - по жанру, 3 - по сценаристу, 4 - по издателю");
+                        int p = int.Parse(Console.ReadLine());
+                        Console.Clear();
+                        Console.WriteLine("Введите название: ");
+                        string str = Console.ReadLine();
+                        Console.Clear();
+                        try
+                        {
+                            bd.Search(p, str);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message + " Для продолжения нажмите Enter");
+                        }
+                        Console.ReadKey();
+                        Console.Clear();
+                        n = 0;
+                        break;
+                    case 5:
                         isWorking = false;
                         break;
                     default:
