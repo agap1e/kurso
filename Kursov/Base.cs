@@ -25,28 +25,62 @@ namespace Base
                 int rowsCount = worksheet.Rows.Count();
                 for (int i = 2; i <= rowsCount; i++)
                 {
-                    Add(worksheet.Range[i, 2].Value, true);
+                    if (worksheet.Range[i, 1].Value.Length != 0 && worksheet.Range[i - 1, 1].Value.Length != 0)
+                    {
+                        Add(worksheet.Range[i, 2].Value, true);
+                    }
+                    else if (worksheet.Range[i, 1].Value.Length != 0 && worksheet.Range[i - 1, 1].Value.Length == 0)
+                    {
+                        Add(worksheet.Range[i, 2].Value, true);
+                        worksheet.DeleteRow(i);
+                        workbook.SaveToFile("Base.xlsx", ExcelVersion.Version2016);
+                    }
                 }
-
                 worksheet = workbook.Worksheets[2];
                 rowsCount = worksheet.Rows.Count();
                 for (int i = 2; i <= rowsCount; i++)
                 {
-                    Add(worksheet.Range[i, 2].Value);
+                    if (worksheet.Range[i, 1].Value.Length != 0 && worksheet.Range[i - 1, 1].Value.Length != 0)
+                    {
+                        Add(worksheet.Range[i, 2].Value);
+                    }
+                    else if (worksheet.Range[i, 1].Value.Length != 0 && worksheet.Range[i - 1, 1].Value.Length == 0)
+                    {
+                        Add(worksheet.Range[i, 2].Value);
+                        worksheet.DeleteRow(i);
+                        workbook.SaveToFile("Base.xlsx", ExcelVersion.Version2016);
+                    }
                 }
-
                 worksheet = workbook.Worksheets[3];
                 rowsCount = worksheet.Rows.Count();
                 for (int i = 2; i <= rowsCount; i++)
                 {
-                    Add(worksheet.Range[i, 2].Value, worksheet.Range[i, 3].Value);
+                    if (worksheet.Range[i, 1].Value.Length != 0 && worksheet.Range[i - 1, 1].Value.Length != 0)
+                    {
+                        Add(worksheet.Range[i, 2].Value, worksheet.Range[i, 3].Value);
+                    }
+                    else if (worksheet.Range[i, 1].Value.Length != 0 && worksheet.Range[i - 1, 1].Value.Length == 0)
+                    {
+                        Add(worksheet.Range[i, 2].Value, worksheet.Range[i, 3].Value);
+                        worksheet.DeleteRow(i);
+                        workbook.SaveToFile("Base.xlsx", ExcelVersion.Version2016);
+                    }
                 }
 
                 worksheet = workbook.Worksheets[0];
                 rowsCount = worksheet.Rows.Count();
                 for (int i = 2; i <= rowsCount; i++)
                 {
-                    Add(worksheet.Range[i, 2].Value, int.Parse(worksheet.Range[i, 3].Value), int.Parse(worksheet.Range[i, 5].Value), int.Parse(worksheet.Range[i, 6].Value), FindGenreInfo(int.Parse(worksheet.Range[i, 4].Value)).Name, FindWriterInfo(int.Parse(worksheet.Range[i, 7].Value)).Name, FindPublisherInfo(int.Parse(worksheet.Range[i, 8].Value)).Name, FindPublisherInfo(int.Parse(worksheet.Range[i, 8].Value)).Country);
+                    if (worksheet.Range[i, 1].Value.Length != 0 && worksheet.Range[i-1, 1].Value.Length != 0)
+                    {
+                        Add(worksheet.Range[i, 2].Value, int.Parse(worksheet.Range[i, 3].Value), int.Parse(worksheet.Range[i, 5].Value), int.Parse(worksheet.Range[i, 6].Value), FindGenreInfo(int.Parse(worksheet.Range[i, 4].Value)).Name, FindWriterInfo(int.Parse(worksheet.Range[i, 7].Value)).Name, FindPublisherInfo(int.Parse(worksheet.Range[i, 8].Value)).Name, FindPublisherInfo(int.Parse(worksheet.Range[i, 8].Value)).Country);
+                    }
+                    else if (worksheet.Range[i, 1].Value.Length != 0 && worksheet.Range[i - 1, 1].Value.Length == 0)
+                    {
+                        Add(worksheet.Range[i, 2].Value, int.Parse(worksheet.Range[i, 3].Value), int.Parse(worksheet.Range[i, 5].Value), int.Parse(worksheet.Range[i, 6].Value), FindGenreInfo(int.Parse(worksheet.Range[i, 4].Value)).Name, FindWriterInfo(int.Parse(worksheet.Range[i, 7].Value)).Name, FindPublisherInfo(int.Parse(worksheet.Range[i, 8].Value)).Name, FindPublisherInfo(int.Parse(worksheet.Range[i, 8].Value)).Country);
+                        worksheet.DeleteRow(i);
+                        workbook.SaveToFile("Base.xlsx", ExcelVersion.Version2016);
+                    }
                 }
             }
             else

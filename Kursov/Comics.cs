@@ -25,7 +25,7 @@ namespace ComicsClass
                 {
                     throw new Exception("Название комикса некорректно введено");
                 }
-                else if (Regex.IsMatch(value, @"^[А-ЯЁа-яё][а-яё]*(?:-[А-ЯЁа-яё][а-яё]*)?$"))
+                else if (Regex.IsMatch(value, @"^[А-ЯЁа-яё][А-ЯЁа-яё]*(?:-[А-ЯЁа-яё][А-ЯЁа-яё]*)?$"))
                 {
                     name = value;
                 }

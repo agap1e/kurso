@@ -22,7 +22,7 @@ namespace GenreClass
                 {
                     throw new Exception("Название жанра некорректно введено");
                 }
-                else if (Regex.IsMatch(value, @"^[А-ЯЁа-яё][а-яё]*(?:-[А-ЯЁа-яё][а-яё]*)?$"))
+                else if (Regex.IsMatch(value, @"^[А-ЯЁа-яё][А-ЯЁа-яё]*(?:-[А-ЯЁа-яё][А-ЯЁа-яё]*)?$"))
                 {
                     name = value;
                 }
