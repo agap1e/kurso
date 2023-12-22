@@ -1,4 +1,5 @@
 ﻿using IdentityClass;
+using System.Text.RegularExpressions;
 
 namespace GenreClass
 {
@@ -21,7 +22,11 @@ namespace GenreClass
                 {
                     throw new Exception("Название жанра некорректно введено");
                 }
-                else name = value;
+                else if (Regex.IsMatch(value, @"^[А-ЯЁа-яё][а-яё]*(?:-[А-ЯЁа-яё][а-яё]*)?$"))
+                {
+                    name = value;
+                }
+                else throw new Exception("Название жанра некорректно введено");
             }
         }
         public Genre(string name)

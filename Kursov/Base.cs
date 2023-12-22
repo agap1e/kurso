@@ -171,27 +171,27 @@ namespace Base
             }
             else throw new Exception("Нельзя удалить комикс, т.к. его не существует");
         }
-        public void RemoveGenre(string name) //Удаление жанра
+        public void RemoveGenre(string name, int i) //Удаление жанра
         {
-            if (CheckForRemove(name) && BD_Genre.Contains(FindGenreInfo(name)))
+            if (CheckForRemove(name, i) && BD_Genre.Contains(FindGenreInfo(name)))
             {
                 Delete(1, FindGenreInfo(name).ID);
                 BD_Genre.Remove(FindGenreInfo(name));
             }
             else throw new Exception("Нельзя удалить жанр, т.к. он используется или не существует");
         }
-        public void RemoveWriter(string name) //Удаление сценариста
+        public void RemoveWriter(string name, int i) //Удаление сценариста
         {
-            if (CheckForRemove(name) && BD_Writer.Contains(FindWriterInfo(name)))
+            if (CheckForRemove(name, i) && BD_Writer.Contains(FindWriterInfo(name)))
             {
                 Delete(2, FindWriterInfo(name).ID);
                 BD_Writer.Remove(FindWriterInfo(name));
             }
             else throw new Exception("Нельзя удалить сценариста, т.к. он используется или не существует");
         }
-        public void RemovePublisher(string name) //Удаление издателя
+        public void RemovePublisher(string name, int i) //Удаление издателя
         {
-            if (CheckForRemove(name) && BD_Publisher.Contains(FindPublisherInfo(name)))
+            if (CheckForRemove(name, i) && BD_Publisher.Contains(FindPublisherInfo(name)))
             {
                 Delete(3, FindPublisherInfo(name).ID);
                 BD_Publisher.Remove(FindPublisherInfo(name));
@@ -231,13 +231,22 @@ namespace Base
                     break;
             }
         } //Вывод
-        private bool CheckForRemove(string name) //Проверка на возможность удаления элемента
+        private bool CheckForRemove(string name, int i) //Проверка на возможность удаления элемента
         {
             foreach (Comics com in BD_Comics)
             {
-                if (com.Genre_id == FindGenreInfo(name).ID) return false;
-                if (com.Writer_id == FindWriterInfo(name).ID) return false;
-                if (com.Publ_id == FindPublisherInfo(name).ID) return false;
+                switch (i)
+                {
+                    case 2:
+                        if (com.Genre_id == FindGenreInfo(name).ID) return false;
+                        break;
+                    case 3:
+                        if (com.Writer_id == FindWriterInfo(name).ID) return false;
+                        break;
+                    case 4:
+                        if (com.Publ_id == FindPublisherInfo(name).ID) return false;
+                        break;
+                }
             }
             return true;
         }

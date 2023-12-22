@@ -24,7 +24,11 @@ namespace Kursov
                         while (isAdding)
                         {
                             Console.WriteLine("Добавить: 1 - комикс, 2 - жанр, 3 - сценариста, 4 - издателя; 5 - возврат");
-                            int i = int.Parse(Console.ReadLine());
+                            int i;
+                            if (!int.TryParse(Console.ReadLine(), out i))
+                            {
+                                i = 6;
+                            }
                             Console.Clear();
                             switch (i)
                             {
@@ -177,7 +181,11 @@ namespace Kursov
                         while (isRemoving)
                         {
                             Console.WriteLine("Удалить: 1 - комикс, 2 - жанр, 3 - сценариста, 4 - издателя; 5 - возврат");
-                            int i = int.Parse(Console.ReadLine());
+                            int i;
+                            if (!int.TryParse(Console.ReadLine(), out i))
+                            {
+                                i = 6;
+                            }
                             Console.Clear();
                             switch (i)
                             {
@@ -219,7 +227,7 @@ namespace Kursov
                                         Console.WriteLine("Введите название жанра");
                                         try
                                         {
-                                            bd.RemoveGenre(Console.ReadLine());
+                                            bd.RemoveGenre(Console.ReadLine(), i);
                                             Console.Clear();
                                             Console.WriteLine("Жанр успешно удалён. Хотите удалить ещё?(Введите n для выхода)");
                                         }
@@ -249,7 +257,7 @@ namespace Kursov
                                         Console.WriteLine("Введите фамилия сценариста");
                                         try
                                         {
-                                            bd.RemoveWriter(Console.ReadLine());
+                                            bd.RemoveWriter(Console.ReadLine(), i);
                                             Console.Clear();
                                             Console.WriteLine("Сценарист успешно удалён. Хотите удалить ещё?(Введите n для выхода)");
                                         }
@@ -279,7 +287,7 @@ namespace Kursov
                                         Console.WriteLine("Введите название издательства");
                                         try
                                         {
-                                            bd.RemovePublisher(Console.ReadLine());
+                                            bd.RemovePublisher(Console.ReadLine(), i);
                                             Console.Clear();
                                             Console.WriteLine("Издатель успешно удалён. Хотите удалить ещё?(Введите n для выхода)");
                                         }
@@ -318,7 +326,14 @@ namespace Kursov
                         break;
                     case 3:
                         Console.WriteLine("Показать: 1 - комиксы, 2 - жанры, 3 - сценаристов, 4 - издателей; 5 - возврат");
-                        int show = int.Parse(Console.ReadLine());
+                        int show;
+                        if (!int.TryParse(Console.ReadLine(), out show))
+                        {
+                            Console.WriteLine("Введено некорректное значение");
+                            Console.ReadKey();
+                            Console.Clear();
+                            break;
+                        }
                         Console.Clear();
                         bd.Show(show);
                         Console.Write("\nДля продолжения нажмите Enter.");
@@ -329,7 +344,14 @@ namespace Kursov
 
                     case 4:
                         Console.WriteLine("1 - по названию комикса, 2 - по жанру, 3 - по сценаристу, 4 - по издателю");
-                        int p = int.Parse(Console.ReadLine());
+                        int p;
+                        if (!int.TryParse(Console.ReadLine(), out p) || p>4)
+                        {
+                            Console.WriteLine("Введено некорректное значение");
+                            Console.ReadKey();
+                            Console.Clear();
+                            break;
+                        }
                         Console.Clear();
                         Console.WriteLine("Введите название: ");
                         string str = Console.ReadLine();

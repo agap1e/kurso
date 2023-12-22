@@ -1,4 +1,5 @@
 ﻿using IdentityClass;
+using System.Text.RegularExpressions;
 
 namespace PublisherClass
 {
@@ -22,7 +23,11 @@ namespace PublisherClass
                 {
                     throw new Exception("Название издателя некорректно введено");
                 }
-                else name = value;
+                else if (Regex.IsMatch(value, @"^[А-ЯЁа-яё][а-яё]*(?:-[А-ЯЁа-яё][а-яё]*)?$"))
+                {
+                    name = value;
+                }
+                else throw new Exception("Название издателя некорректно введено");
             }
         }
         public string Country
@@ -39,7 +44,11 @@ namespace PublisherClass
                 {
                     throw new Exception("Название страны некорректно введено");
                 }
-                else country = value;
+                else if (Regex.IsMatch(value, @"^[А-ЯЁа-яё][а-яё]*(?:-[А-ЯЁа-яё][а-яё]*)?$"))
+                {
+                    country = value;
+                }
+                else throw new Exception("Название страны некорректно введено");
             }
         }
         public Publisher(string name, string country)

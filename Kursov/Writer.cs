@@ -1,4 +1,5 @@
 ﻿using IdentityClass;
+using System.Text.RegularExpressions;
 
 namespace WriterClass
 {
@@ -21,7 +22,11 @@ namespace WriterClass
                 {
                     throw new Exception("Фамилия сценариста некорректно введена");
                 }
-                else name = value;
+                else if (Regex.IsMatch(value, @"^[А-ЯЁа-яё][а-яё]*(?:-[А-ЯЁа-яё][а-яё]*)?$"))
+                {
+                    name = value;
+                }
+                else throw new Exception("Фамилия сценариста некорректно введена");
             }
         }
         public Writer(string name)

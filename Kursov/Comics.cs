@@ -1,4 +1,5 @@
 ﻿using IdentityClass;
+using System.Text.RegularExpressions;
 
 namespace ComicsClass
 {
@@ -24,7 +25,11 @@ namespace ComicsClass
                 {
                     throw new Exception("Название комикса некорректно введено");
                 }
-                else name = value;
+                else if (Regex.IsMatch(value, @"^[А-ЯЁа-яё][а-яё]*(?:-[А-ЯЁа-яё][а-яё]*)?$"))
+                {
+                    name = value;
+                }
+                else throw new Exception("Название комикса некорректно введено");
             }
         }
 
